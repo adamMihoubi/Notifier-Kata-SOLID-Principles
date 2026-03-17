@@ -1,11 +1,13 @@
 package notifier.doubles;
 
+import java.time.Instant;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 import notifier.CanalFactory;
 import notifier.Notifier;
 import notifier.email.EmailNotifier;
+import notifier.email.MailCounter;
 import notifier.push.PushNotifier;
 import notifier.sms.SmsNotifier;
 import notifier.user.Canal;
@@ -20,7 +22,7 @@ public class SpyCanalFactory extends CanalFactory {
     public SpyCanalFactory() {
         super(new EmailNotifier(_ -> {
         }, _ -> {
-        }), new PushNotifier(_ -> {
+        }, new MailCounter(Instant::now)), new PushNotifier(_ -> {
         }), new SmsNotifier(_ -> {
         }));
     }
