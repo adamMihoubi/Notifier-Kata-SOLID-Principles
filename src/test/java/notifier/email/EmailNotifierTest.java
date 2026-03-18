@@ -51,6 +51,6 @@ class EmailNotifierTest {
             new Message(MAIL_TITLE, MAIL_BODY, new Receiver(EMAIL, "+338574")));
 
         assertThat(callAfterLimit)
-            .isEqualTo(new Result(Status.DELAYED));
+            .isEqualTo(new Result(Status.CANCELED));
     }
 }

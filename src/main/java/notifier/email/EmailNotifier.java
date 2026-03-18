@@ -13,7 +13,9 @@ public class EmailNotifier implements Notifier {
     private final EmailMapper emailMapper;
     private final MailCounter mailCounter;
 
-    public EmailNotifier(Logger logger, EmailSender emailSender, MailCounter mailCounter) {
+    public EmailNotifier(Logger logger,
+                         EmailSender emailSender,
+                         MailCounter mailCounter) {
         this.logger = logger;
         this.emailSender = emailSender;
         this.mailCounter = mailCounter;
@@ -25,7 +27,7 @@ public class EmailNotifier implements Notifier {
         boolean limited = mailCounter.isLimited();
         if (limited) {
             logger.log("email has been delayed because of the limit of 100 mails per hour");
-            return new Result(Status.DELAYED);
+            return new Result(Status.CANCELED);
         }
         emailSender.send(emailMapper.toDto(message));
         logger.log(String.format("email has been sent to %s", message.receiver().email()));
