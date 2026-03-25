@@ -1,7 +1,6 @@
 package notifier.doubles;
 
 import java.time.Instant;
-import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 import notifier.CanalFactory;
@@ -17,22 +16,16 @@ public class SpyCanalFactory extends CanalFactory {
         Map.of(Canal.MAIL, EmailNotifier.class,
             Canal.PUSH, PushNotifier.class,
             Canal.SMS, SmsNotifier.class);
-    private final Map<Canal, Notifier> notifiers = new EnumMap<>(Canal.class);
-
-    public SpyCanalFactory() {
-        super(Map.of(Canal.MAIL, new EmailNotifier(_ -> {
+    private static final Map<Canal, Notifier> notifiers =
+        Map.of(Canal.MAIL, new EmailNotifier(_ -> {
             }, _ -> {
             }, new MailCounter(Instant::now)),
             Canal.PUSH, new PushNotifier(_ -> {
             }), Canal.SMS, new SmsNotifier(_ -> {
-            })));
-    }
+            }));
 
-    @Override
-    public Notifier of(Canal canal) {
-        final var notifier = super.of(canal);
-        notifiers.put(canal, notifier);
-        return notifier;
+    public SpyCanalFactory() {
+        super(notifiers);
     }
 
     public boolean isNotifierCalledTypeOf(Canal canal) {
