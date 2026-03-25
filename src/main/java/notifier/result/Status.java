@@ -1,5 +1,5 @@
 package notifier.result;
 
 public enum Status {
-    CANCELED, OK
+    CANCELED, PLANNED, OK
 }
