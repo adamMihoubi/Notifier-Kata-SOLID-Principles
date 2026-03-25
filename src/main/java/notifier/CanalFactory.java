@@ -1,28 +1,18 @@
 package notifier;
 
-import notifier.email.EmailNotifier;
-import notifier.push.PushNotifier;
-import notifier.sms.SmsNotifier;
+import java.util.Map;
+import java.util.Optional;
 import notifier.user.Canal;
 
 public class CanalFactory {
-    private final EmailNotifier emailNotifier;
-    private final PushNotifier pushNotifier;
-    private final SmsNotifier smsNotifier;
+    private final Map<Canal, Notifier> notifiers;
 
-    public CanalFactory(EmailNotifier emailNotifier,
-                        PushNotifier pushNotifier,
-                        SmsNotifier smsNotifier) {
-        this.emailNotifier = emailNotifier;
-        this.pushNotifier = pushNotifier;
-        this.smsNotifier = smsNotifier;
+    public CanalFactory(Map<Canal, Notifier> notifiers) {
+        this.notifiers = notifiers;
     }
 
     public Notifier of(Canal canal) {
-        return switch (canal) {
-            case PUSH -> pushNotifier;
-            case SMS -> smsNotifier;
-            case MAIL -> emailNotifier;
-        };
+        return Optional.ofNullable(notifiers.get(canal))
+            .orElseThrow(() -> new IllegalArgumentException("No notifier found for canal " + canal));
     }
 }

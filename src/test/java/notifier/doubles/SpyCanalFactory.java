@@ -20,11 +20,12 @@ public class SpyCanalFactory extends CanalFactory {
     private final Map<Canal, Notifier> notifiers = new EnumMap<>(Canal.class);
 
     public SpyCanalFactory() {
-        super(new EmailNotifier(_ -> {
-        }, _ -> {
-        }, new MailCounter(Instant::now)), new PushNotifier(_ -> {
-        }), new SmsNotifier(_ -> {
-        }));
+        super(Map.of(Canal.MAIL, new EmailNotifier(_ -> {
+            }, _ -> {
+            }, new MailCounter(Instant::now)),
+            Canal.PUSH, new PushNotifier(_ -> {
+            }), Canal.SMS, new SmsNotifier(_ -> {
+            })));
     }
 
     @Override
